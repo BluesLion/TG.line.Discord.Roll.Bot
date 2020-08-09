@@ -79,10 +79,10 @@ client.on('message', async (message) => {
 	let userrole = 1;
 	//console.log(message.guild)
 	if (message.guild && message.guild.me) {
-		hasSendPermission = message.guild.me.hasPermission("SEND_MESSAGES");
+		//	hasSendPermission = message.guild.me.hasPermission("SEND_MESSAGES");
 	}
 	if (message.channel.type !== "dm") {
-		hasSendPermission = message.channel.permissionsFor(client.user).has("SEND_MESSAGES")
+		//	hasSendPermission = message.channel.permissionsFor(client.user).has("SEND_MESSAGES")
 	}
 	if (message.channel && message.channel.id) {
 		channelid = message.channel.id;
@@ -108,10 +108,10 @@ client.on('message', async (message) => {
 	if (message.guild && message.guild.members) {
 		//membercount = await message.guild.members.cache.filter(member => !member.user.bot).size;
 		//membercount = message.guild.channels.cache.filter(m => m.type === 'text').size
-		membercount = await message.guild.members.fetch().then(member => {
-			// The member is available here.
-			return member.filter(member => !member.user.bot).size;
-		});
+		//membercount = await message.guild.members.fetch().then(member => {
+		// The member is available here.
+		//	return member.filter(member => !member.user.bot).size;
+		//	});
 	}
 
 	if (!message.content) {
