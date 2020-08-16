@@ -1,11 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-tw">
 
 <head>
     <meta charset="UTF-8">
-    <meta content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=0,shrink-to-fit=no"
+        name="viewport" />
     <title>HKTRPG 擲骰機器人及聊天室 1D100 2D6 查詢指令輸入Bothelp</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="/socket.io/socket.io.js"></script>
+
     <script>
         var socket = io();
     </script>
@@ -86,16 +90,20 @@
         }
 
         input[name="name"] {
-            width: 15%;
+            width: 5em;
+            font-size: 0.8em;
         }
+
+        input[name="roomNumber"] {
+            width: 6em;
+            font-size: 0.8em;
+        }
+
 
         input[name="msg"] {
             width: 60%;
 
         }
-
-
-
         input[type="submit"] {
             width: 5rem;
             height: 4rem;
@@ -315,14 +323,50 @@
             color: #aaa;
             font-size: 0.6em;
         }
+
+        .bi::before {
+            display: inline-block;
+            content: "";
+            background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z' clip-rule='evenodd'/></svg>");
+            background-repeat: no-repeat;
+            background-size: 1rem 1rem;
+        }
     </style>
 </head>
 
 <body>
-    <center><a href="https://www.hktrpg.com/wiki/index.php/%E9%A6%96%E9%A0%81">HKTRPG 擲骰工具及聊天室</a></center>
+    <center><a href="https://www.hktrpg.com/wiki/index.php/%E9%A6%96%E9%A0%81">HKTRPG <svg width="1em" height="1em"
+                viewBox="0 0 16 16" class="bi bi-dice-6" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                    d="M13 1H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z" />
+                <circle cx="4" cy="4" r="1.5" />
+                <circle cx="12" cy="4" r="1.5" />
+                <circle cx="12" cy="12" r="1.5" />
+                <circle cx="12" cy="8" r="1.5" />
+                <circle cx="4" cy="12" r="1.5" />
+                <circle cx="4" cy="8" r="1.5" />
+            </svg> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chat-dots-fill" fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                    d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+            </svg></a>
+
+        <img src="/assets/img/bootstrap.svg" alt="" width="32" height="32" title="Bootstrap"><img
+            src="/assets/img/bootstrap.svg" alt="" width="32" height="32" title="Bootstrap"></center>
     <div id="container">
-        <center> <span style="font-size: 0.7em;">每間房間上限100條信息 輸入名字可以進入自定的房間</span></center>
-        <div id="status-box" style="font-size: 0.9em">Server: <span id="status">-</span> / <span id="online">0</span>
+        <center>
+            <div style="font-size: 0.8em;"> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-door"
+                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M7.646 1.146a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5H9.5a.5.5 0 0 1-.5-.5v-4H7v4a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6zM2.5 7.707V14H6v-4a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4h3.5V7.707L8 2.207l-5.5 5.5z" />
+                    <path fill-rule="evenodd" d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
+                </svg>: <span id="room">公共房間</span></div>
+        </center>
+        <div id="status-box" style="font-size: 0.9em"><svg width="1em" height="1em" viewBox="0 0 16 16"
+                class="bi bi-people-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                    d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+            </svg> x <span id="online">0</span>
             online.</div>
         <div id="content">
         </div>
@@ -330,32 +374,50 @@
             <table style="margin-left: auto;
             margin-right: auto;width:auto">
                 <tr>
-                    <th>
-                        <div style="font-size: 0.8em;"> 現在房間: <span id="room">公共房間</span></div>
-                    </th>
                     <th style="text-align: center;">
                         <form id="changeRoomNumber-form">
-                            <input style="width:8em;font-size: 0.8em;" type="text" name="roomNumber" id="roomNumber"
-                                value="公共房間" placeholder="房間名稱" maxlength="50">
-                    <th> <input type="submit" style="margin-top:4px;width: 4rem;
-                            height: 2rem;" id="changeRoomNumber" value="變更"></th>
+                            <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-person"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                            </svg> <input type="text" name="name" id="name" value="" placeholder="暱稱" maxlength="50">
+                            <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-house-door"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M7.646 1.146a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5H9.5a.5.5 0 0 1-.5-.5v-4H7v4a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6zM2.5 7.707V14H6v-4a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4h3.5V7.707L8 2.207l-5.5 5.5z" />
+                                <path fill-rule="evenodd" d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
+                            </svg> <input type="text" name="roomNumber" id="roomNumber" value="公共房間" placeholder="房間名稱"
+                                maxlength="50">
+                    <th> <input type="submit" style="margin-top:4px;width: 2rem;
+                            height: 2rem;font-size: 12px;" id="changeRoomNumber" value="變更"></th>
                     </form>
                     </th>
                 </tr>
             </table>
         </div>
         <div id="send-box" style="margin-top:6px;">
-            <form id="send-form">
-                <input style="width:8em;font-size: 1em;" type="text" name="name" id="name" value="" placeholder="暱稱"
-                    maxlength="50">
+            <form id="send-form"><svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-chat-right-text" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M2 1h12a1 1 0 0 1 1 1v11.586l-2-2A2 2 0 0 0 11.586 11H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
+                <path fill-rule="evenodd" d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+              </svg>
                 <input style="width:30vw;font-size: 1em;" type="text" name="msg" id="msg" value="1d100"
                     placeholder="說點什麼？" maxlength="1000">
                 <input type="submit" style="margin-top:4px;width: 4rem;
                 height: 2rem;" id="submit" value="送出" onclick="genName()">
             </form>
         </div>
+        <center> <span style="font-size: 0.7em;">每間房間上限100條信息 輸入名字可以進入自定的房間</span></center>
     </div>
     <center>輸入Bothelp 顯示教學</center>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
 </body>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111430056-7"></script>
@@ -387,7 +449,7 @@
     document.addEventListener("DOMContentLoaded", () => {
         var roomNumber = "公共房間"
         var max_record = 100;
-        var status = document.getElementById("status");
+        // var status = document.getElementById("status");
         var online = document.getElementById("online");
         var room = document.getElementById("room");
         var roomText = document.getElementById("roomNumber");
@@ -400,15 +462,15 @@
         if (name) {
             nameInputBox.value = name;
         }
+        /**
+                socket.on("connect", function () {
+                    status.innerText = "Connected.";
+                });
 
-        socket.on("connect", function () {
-            status.innerText = "Connected.";
-        });
-
-        socket.on("disconnect", function () {
-            status.innerText = "Disconnected.";
-        });
-
+                socket.on("disconnect", function () {
+                    status.innerText = "Disconnected.";
+                });
+        **/
         socket.on("online", function (amount) {
             online.innerText = amount;
         });
@@ -433,15 +495,16 @@
         changeRoomNumber.addEventListener("submit", async function (e) {
             e.preventDefault();
             color = 3;
-            if (!changeRoomNumber.children[0].value) {
+            console.log('roomText', roomText.value, )
+            if (!roomText.value) {
                 roomText.innerHTML = "公共房間";
                 roomText.value = "公共房間";
             };
-            if (changeRoomNumber.children[0].value == roomNumber) {
+            if (roomText.value == roomNumber) {
                 return;
             }
             await socket.off(roomNumber);
-            roomNumber = changeRoomNumber.children[0].value;
+            roomNumber = roomText.value;
             let myNode = document.getElementById("content");
             myNode.innerHTML = '';
             socket.emit("newRoom", roomNumber);
@@ -472,6 +535,7 @@
                 }
             }
             if (ok) {
+                formData.name = nameInputBox.value;
                 formData.roomNumber = roomNumber;
                 socket.emit("send", formData);
                 setCookie("name", nameInputBox.value);
